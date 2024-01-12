@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 import { COLORS } from "@/utils/constants/colors";
-import BigButtonComponent from "@/components/atoms/Button/BigButton.component";
+import Link from "@/components/atoms/Link/Link.component";
 
 interface Props {
   userName: string | undefined;
@@ -12,17 +12,17 @@ export default function SideBarComponent({userName, userId}: Props) {
 
   return (
     <SideBarWrapper>
-      <BigButtonComponent linkTo="/" text="Go to HomePage" textSize="big" />
+      <Link linkTo="/" text="Go to HomePage" textSize="20" />
       <UserSummaryWrapper>
         <RoundImageWrapper>
-          <ImageProfile src={`/assets/images/userId_${userId}.jpg`} alt="test alt" /> 
+          <ImageProfile src={`/assets/images/userId_${userId}.jpg`} alt={`Image for userId ${userId}`} /> 
         </RoundImageWrapper>
         <WelcomeText>Live long & prosper,</WelcomeText>
         <WelcomeText>{ userName }</WelcomeText>
         <WelcomeText>ID = {userId}</WelcomeText>
       </UserSummaryWrapper>
-      <BigButtonComponent linkTo='/dashboard/1' text="Dashboard" textSize="medium" />
-      <BigButtonComponent linkTo='/posts/1' text="Blog posts" textSize="medium" />
+      <Link linkTo='/dashboard/1' text="Dashboard" textSize="medium" />
+      <Link linkTo='/posts/1' text="Blog posts" textSize="medium" />
     </SideBarWrapper>
   )
 }
@@ -47,7 +47,6 @@ const UserSummaryWrapper = styled.div`
 `
 
 const RoundImageWrapper = styled.div`
-  border-radius: 50%;
   width: 120px;
   height: 120px;
   margin-bottom: 10px;

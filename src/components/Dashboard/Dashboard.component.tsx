@@ -2,30 +2,30 @@
 
 import type { userDetailsType } from '@/utils/types/types';
 import styled from 'styled-components';
-import { Flex as AntFlex } from 'antd';
 import SideBarComponent from '@/components/SideBar/SideBar.component';
 import DashboardContentComponent from '@/components/Dashboard/DashboardContent.component';
 
 interface Props {
   userDetails: userDetailsType | undefined
 }
+
 export default function DashboardComponent({userDetails}: Props) {
 
   console.log("in DashboardComponent I receive:")
   console.log("userDetails = ", userDetails);
 
   return (
-    <StyledDashboardWrapper >
+    <DashboardWrapper >
       <SideBarComponent 
         userName={userDetails?.name} 
         userId={userDetails?.id}
       />
-      <DashboardContentComponent />
-    </StyledDashboardWrapper>
+      <DashboardContentComponent userDetails={userDetails}/>
+    </DashboardWrapper>
   )
 }
 
-const StyledDashboardWrapper = styled(AntFlex)`
+const DashboardWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;

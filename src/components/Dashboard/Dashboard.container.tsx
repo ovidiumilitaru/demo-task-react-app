@@ -29,7 +29,7 @@ export default function DashboardContainer({userId}: Props) {
   if (isError) {
     return (
       <div>
-        <p>Something went wrong, please came again later</p>
+        <p>Something went wrong, please try again later</p>
         <p>{error.message}</p>
       </div>
     )
@@ -38,7 +38,7 @@ export default function DashboardContainer({userId}: Props) {
   if (data && Object.keys(data).length === 0) {
     return (
       <div>
-        <p>Something went wrong, please came again later</p>
+        <p>Something went wrong, please try again later</p>
       </div>
     )
   }
