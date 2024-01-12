@@ -1,16 +1,14 @@
 'use client';
 
 import { useRouter, useParams } from "next/navigation";
+import DashboardContainer from '@/components/Dashboard/Dashboard.container'
 
 export default function Dashboard() {
   const router = useRouter();
-  console.log("Dashboard page, router = ", router);
-  const params = useParams();
-  console.log("Dashboard page, params = ", params);
+  const params = useParams<{ userId: string }>();
+  const userId: string = params.userId
 
   return (
-    <div>
-      <p>Dashboard route with user id = {params.userId}</p>
-    </div>
+    <DashboardContainer userId={userId} />
   )
 }

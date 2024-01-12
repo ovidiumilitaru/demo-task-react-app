@@ -2,11 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { BASE_URL, USERS_URL_PART } from "../constants/constants";
 
 
-export const getUserDetails = (userId: number) => {
+export const getUserDetails = (userId: string) => {
   const url = `${BASE_URL}${USERS_URL_PART}/${userId}`;
-
-  
-  console.log('url = ', url);
 
   const fetchUserDetails = async () => {
     const result = await fetch(url);
