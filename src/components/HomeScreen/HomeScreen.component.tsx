@@ -1,11 +1,11 @@
 'use client';
 
-import { Button as AntButton, Flex as AntFlex, Typography as AntTypography, Divider as AntDivider  } from 'antd';
+import { Button as AntButton, Flex, Typography as AntTypography, Divider as AntDivider  } from 'antd';
 import { useRouter } from 'next/navigation';
 import styled from "styled-components";
 import { getRandomUser } from "@/utils/getters/getRandomUser";
 
-const { Title: AntTitle, Text: AntText } = AntTypography 
+const { Title: AntTitle, Text } = AntTypography 
 
 export default function HomeScreenComponent() {
   const router = useRouter();
@@ -16,22 +16,22 @@ export default function HomeScreenComponent() {
   };
 
   return (
-    <StyledFlexContainer>
+    <AntFlexContainer>
         <AntTitle level={3}>This Demo App uses following technology stack:</AntTitle>
-        <StyledText >Next.js</StyledText>
-        <StyledText >React.js</StyledText>
-        <StyledText >TypeScript</StyledText>
-        <StyledText >Styled Components</StyledText>
-        <StyledText >Ant Design</StyledText>
-        <StyledText >React Query</StyledText>
-        <StyledText type="success">Click the button below to randomize a user id and proceed</StyledText>
+        <AntText >Next.js</AntText>
+        <AntText >React.js</AntText>
+        <AntText >TypeScript</AntText>
+        <AntText >Styled Components</AntText>
+        <AntText >Ant Design</AntText>
+        <AntText >React Query</AntText>
+        <AntText type="success">Click the button below to randomize a user id and proceed</AntText>
         <AntDivider />
-      <StyledBigButton type='primary' onClick={clickHandler}>Click me!</StyledBigButton>
-    </StyledFlexContainer>
+      <AntButton type='primary' onClick={clickHandler}>Click me!</AntButton>
+    </AntFlexContainer>
   )
 }
 
-const StyledFlexContainer = styled(AntFlex)`
+const AntFlexContainer = styled(Flex)`
   border: 1px solid red;
   min-height: 100vh;
   flex-direction: column;
@@ -39,10 +39,6 @@ const StyledFlexContainer = styled(AntFlex)`
   align-items: center;
 `;
 
-const StyledText = styled(AntText)`
+const AntText = styled(Text)`
   font-size: 16px;
-`;
-
-const StyledBigButton = styled(AntButton)`
-  width: 150px;
 `;
