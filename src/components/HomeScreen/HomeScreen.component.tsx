@@ -1,44 +1,58 @@
 'use client';
 
-import { Button as AntButton, Flex, Typography as AntTypography, Divider as AntDivider  } from 'antd';
 import { useRouter } from 'next/navigation';
 import styled from "styled-components";
 import { getRandomUser } from "@/utils/getters/getRandomUser";
+import { COLORS } from '@/utils/constants/colors';
+import Button from '@/components/atoms/Button/Button.component';
 
-const { Title: AntTitle, Text } = AntTypography 
 
 export default function HomeScreenComponent() {
   const router = useRouter();
 
   const clickHandler = () => {
+    console.log("CLICK")
     const userId: string = getRandomUser();
     router.push(`/dashboard/${userId}`);
   };
 
   return (
-    <AntFlexContainer>
-        <AntTitle level={3}>This Demo App uses following technology stack:</AntTitle>
-        <AntText >Next.js</AntText>
-        <AntText >React.js</AntText>
-        <AntText >TypeScript</AntText>
-        <AntText >Styled Components</AntText>
-        <AntText >Ant Design</AntText>
-        <AntText >React Query</AntText>
-        <AntText type="success">Click the button below to randomize a user id and proceed</AntText>
-        <AntDivider />
-      <AntButton type='primary' onClick={clickHandler}>Click me!</AntButton>
-    </AntFlexContainer>
+    <HomePageWrapper>
+      <Title $textColor={ COLORS.PRIMARY_BLUE }>This Demo App uses following technology stack:</Title>
+      <Text $textColor={ COLORS.PRIMARY_BLUE }>Next.js</Text>
+      <Text $textColor={ COLORS.PRIMARY_BLUE }>React.js</Text>
+      <Text $textColor={ COLORS.PRIMARY_BLUE }>TypeScript</Text>
+      <Text $textColor={ COLORS.PRIMARY_BLUE }>Styled Components</Text>
+      <Text $textColor={ COLORS.PRIMARY_BLUE }>React Query</Text>
+      <Divider />
+      <Text $textColor={ COLORS.GREEN }>Click the button below to randomize a user id and proceed</Text>
+      <Divider />
+
+      <Button onClick={clickHandler} text="Click me!" />
+    </HomePageWrapper>
   )
 }
 
-const AntFlexContainer = styled(Flex)`
-  border: 1px solid red;
+const HomePageWrapper = styled.div`
+  display: flex;
   min-height: 100vh;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const AntText = styled(Text)`
-  font-size: 16px;
+const Title = styled.h3<{ $textColor?: string }>`
+  font-size: 24px;
+  padding: 4px 0;
+  color: ${ (props) => props.$textColor || COLORS.BLACK}};
 `;
+
+const Text = styled.p<{ $textColor?: string }>`
+  font-size: 16px;
+  padding: 4px 0;
+  color: ${ (props) => props?.$textColor || COLORS.BLACK};
+`;
+
+const Divider = styled.div`
+  height: 8px;
+`
