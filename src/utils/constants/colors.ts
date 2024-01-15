@@ -5,4 +5,5 @@ export const COLORS = {
   PRIMARY_BLUE: '#1677ff',
   SECONDARY_BLUE: '#03396c',
   GREEN: '#009900',
+  RED: 'red',
 }

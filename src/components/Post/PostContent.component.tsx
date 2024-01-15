@@ -1,19 +1,36 @@
 'use client';
 
+import { useState } from "react";
 import styled from "styled-components";;
 import { COLORS } from "@/utils/constants/colors";
 import type { userPostType } from "@/utils/types/types";
+import ModalComponent from "@/components/Modal/Modal.component";
+import { MODAL_VARIANT } from '@/utils/constants/constants'
 
 interface Props {
   post: userPostType | undefined,
 }
 export default function PostContentContainer({ post }: Props) {
+  const [modalIsVisible, setModalIsVisible] = useState(false);
+  const [modalVariant, setModalVariant] = useState(MODAL_VARIANT.EDIT);
+
+  const openModal = () => {
+    setModalIsVisible(true);
+  }
+
+  const closeModal = () => {
+    setModalIsVisible(false);
+  }
+
   const editHandler = () => {
-    console.log('Click on editHandler')
+    setModalIsVisible(true);
+    setModalVariant(MODAL_VARIANT.EDIT)
+
   };
 
   const deleteHandler = () => {
-    console.log('Click on deleteHandler')
+    setModalIsVisible(true);
+    setModalVariant(MODAL_VARIANT.DELETE)
   };
 
   return (
@@ -26,6 +43,14 @@ export default function PostContentContainer({ post }: Props) {
           <PostButton onClick={deleteHandler}>Delete</PostButton>
         </PostEditButtonWrapper>
       </PostWrapper>
+
+      <ModalComponent 
+        closeModal={closeModal} 
+        modalIsVisible={modalIsVisible} 
+        variant={modalVariant} 
+        userId={post?.userId.toString()}
+        postId={post?.id.toString()}
+      />
     </PostContentWrapper>
   )
 };
