@@ -28,3 +28,12 @@ export type userDetailsType = {
   username: string;
   website: string;
 }
+
+export interface userPostType {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+};
+
+export type userPostsType = userPostType[];
