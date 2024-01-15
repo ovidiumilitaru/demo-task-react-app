@@ -3,22 +3,28 @@
 import styled from 'styled-components';
 import { COLORS } from '@/utils/constants/colors';
 import type { userPostsType, userPostType } from '@/utils/types/types';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   userPosts: userPostsType | undefined;
 };
 
-const renderPost = (post: userPostType) => {
-  return (
-    <BlogPostWrapper key={post.id}>
-      <BlogPostTitle>{post.title}</BlogPostTitle>
-      <BlogPostBody>{post.body}</BlogPostBody>
-    </BlogPostWrapper>
-  )
-}
-export default function BlogsContentComponent( {userPosts} : Props) {
 
-  const userId = userPosts?.[0].userId;
+export default function BlogsContentComponent( {userPosts} : Props) {
+  const router = useRouter();
+
+  const clickHandler = (post: userPostType) => {
+    router.push(`/blogs/${post.userId}/post/${post.id}`)
+  };
+
+  const renderPost = (post: userPostType) => {
+    return (
+      <BlogPostWrapper key={post.id} onClick={() => clickHandler(post)}>
+        <BlogPostTitle>{post.title}</BlogPostTitle>
+        <BlogPostBody>{post.body}</BlogPostBody>
+      </BlogPostWrapper>
+    )
+  };
 
   return (
     <BlogsContentWrapper>
@@ -39,12 +45,19 @@ const BlogsContentWrapper = styled.div`
   color: white;
 `; 
 
-const BlogPostWrapper = styled.div`
+const BlogPostWrapper = styled.button`
   width: 95%;
   background-color: ${COLORS.PRIMARY_BLUE};
+  border: 1px solid ${COLORS.PRIMARY_BLUE};
   border-radius: 8px; 
+
   margin-bottom: 8px;
   padding: 16px 8px;
+  color: white;
+  text-align: left;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const BlogPostTitle = styled.p`
@@ -55,5 +68,4 @@ const BlogPostTitle = styled.p`
 
 const BlogPostBody = styled.p`
   font-size: 14px;
-
 `
