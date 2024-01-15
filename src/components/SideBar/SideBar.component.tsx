@@ -21,8 +21,8 @@ export default function SideBarComponent({userName, userId}: Props) {
         <WelcomeText>{ userName }</WelcomeText>
         <WelcomeText>ID = {userId}</WelcomeText>
       </UserSummaryWrapper>
-      <Link linkTo='/dashboard/1' text="Dashboard" textSize="medium" />
-      <Link linkTo='/posts/1' text="Blog posts" textSize="medium" />
+      <Link linkTo={`/dashboard/${userId}`} text="Dashboard" textSize="medium" />
+      <Link linkTo={`/blogs/${userId}`} text="Blog posts" textSize="medium" />
     </SideBarWrapper>
   )
 }

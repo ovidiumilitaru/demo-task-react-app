@@ -11,9 +11,6 @@ interface Props {
 
 export default function DashboardComponent({userDetails}: Props) {
 
-  console.log("in DashboardComponent I receive:")
-  console.log("userDetails = ", userDetails);
-
   return (
     <DashboardWrapper >
       <SideBarComponent 

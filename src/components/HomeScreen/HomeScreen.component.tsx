@@ -11,7 +11,6 @@ export default function HomeScreenComponent() {
   const router = useRouter();
 
   const clickHandler = () => {
-    console.log("CLICK")
     const userId: string = getRandomUser();
     router.push(`/dashboard/${userId}`);
   };
