@@ -22,7 +22,7 @@ const Btn = styled.button`
   color: ${COLORS.WHITE};
 
   &:hover {
-    cursor: grab;
+    cursor: pointer;
     opacity: 0.80;
   }
 `

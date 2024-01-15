@@ -2,17 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { getUserDetails } from "@/utils/queries/getUserDetails";
-import { getUserPosts } from '@/utils/queries/getUserPosts';
-import type { userDetailsType, userPostsType } from '@/utils/types/types';
-import BlogsComponent from "./Blogs.component";
+import { getPost } from '@/utils/queries/getPost';
+import type { userDetailsType, userPostType } from '@/utils/types/types';
+import PostComponent from "./Post.component";
 
 interface Props {
   userId: string;
-}
+  postId: string;
+};
 
-export default function BlogsContainer({userId}: Props) {
+export default function PostContainer({userId, postId}: Props) {
   const [userDetails, setUserDetails] = useState<userDetailsType | undefined>();
-  const [userPosts, setUserPosts] = useState<userPostsType | undefined>();
+  const [post, setPost] = useState<userPostType | undefined>();
 
   const { 
     isPending: userDetailsIsPending, 
@@ -22,21 +23,21 @@ export default function BlogsContainer({userId}: Props) {
   } = getUserDetails(userId);
 
   const { 
-    isPending: userPostsIsPending, 
-    isError: userPostsIsError, 
-    error: userPostsError, 
-    data: userPostsData 
-  } = getUserPosts(userId);
-  
+    isPending: postIsPending, 
+    isError: postIsError, 
+    error: postError, 
+    data: postData 
+  } = getPost(postId);
+
   useEffect(() => {
     setUserDetails(userDetailsData);
   }, [userDetailsData]);
 
   useEffect(() => {
-    setUserPosts(userPostsData);
-  }, [userPostsData]);
+    setPost(postData);
+  }, [postData]);
 
-  if (userDetailsIsPending || userPostsIsPending) { 
+  if (userDetailsIsPending || postIsPending) { 
     return (
       <div>
         <p>Loading data ...</p>
@@ -44,17 +45,17 @@ export default function BlogsContainer({userId}: Props) {
     )
   }
 
-  if (userDetailsIsError || userPostsIsError) {
+  if (userDetailsIsError || postIsError) {
     return (
       <div>
         <p>Something went wrong, please try again later</p>
         <p>{userDetailsError?.message}</p>
-        <p>{userPostsError?.message}</p>
+        <p>{postError?.message}</p>
       </div>
     )
   }
 
-  if ((userDetailsData && Object.keys(userDetailsData).length === 0) || (userPostsData && Object.keys(userPostsData).length === 0)) {
+  if ((userDetailsData && Object.keys(userDetailsData).length === 0) || (postData && Object.keys(postData).length === 0)) {
     return (
       <div>
         <p>Something went wrong, please try again later</p>
@@ -63,6 +64,7 @@ export default function BlogsContainer({userId}: Props) {
   }
 
   return (
-    <BlogsComponent userDetails={userDetails} userPosts={userPosts} />
+    <PostComponent userDetails={userDetails} post={post} />
+
   )
 }
