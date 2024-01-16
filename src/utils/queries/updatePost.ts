@@ -1,9 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { BASE_URL, POSTS_URL_PART, METHOD } from "@/utils/constants/constants";
 import type { userPostType } from "@/utils/types/types";
 
 export const updatePostMutation = (payload: userPostType) => {
-  const queryClient = useQueryClient();
   const url = `${BASE_URL}${POSTS_URL_PART}/${payload.id.toString()}`;
   const method = METHOD.PUT;
 
@@ -25,11 +24,7 @@ export const updatePostMutation = (payload: userPostType) => {
   }
 
   return useMutation({
-    mutationFn: fetchUpdatePost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getPost']});
-      queryClient.invalidateQueries({ queryKey: ['getUserPosts']});
-    }
+    mutationFn: fetchUpdatePost
   });
 }
 
