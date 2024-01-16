@@ -1,74 +1,158 @@
 'use client';
 
-import { useState } from 'react';
+import { SetStateAction, useState, useEffect } from 'react';
 import styled from "styled-components";
 import { COLORS } from "@/utils/constants/colors";
 import { MODAL_VARIANT } from "@/utils/constants/constants";
 import { deletePostMutation } from '@/utils/queries/deletePost';
+import { updatePostMutation } from '@/utils/queries/updatePost';
 import { useRouter } from "next/navigation";
-// import { BASE_URL } from "@/utils/constants/constants";
+import { userPostType } from '@/utils/types/types';
 
 interface Props {
   modalIsVisible: boolean;
   variant: string;
   userId: string | undefined;
   postId: string | undefined;
+  postTitle: string | undefined;
+  postBody: string | undefined;
   closeModal: () => void;
 }
 
-export default function ModalComponent({modalIsVisible, variant, userId, postId, closeModal }: Props) {
+export default function ModalComponent({modalIsVisible, variant, userId, postId, postTitle, postBody, closeModal }: Props) {
   const router = useRouter();
   const [delSaveBtnClicked, setDelSaveBtnClicked] = useState(false);
-  const { isPending, isError, isSuccess, mutate } = deletePostMutation(postId!);
+  const [updatedTitle, setUpdatedTitle] = useState('');
+  const [updatedBody, setUpdatedBody] = useState('');
+  const [payload, setPayload] = useState<userPostType>({ id: 0, title: '', body: '', userId: 0 });
+
+  useEffect(() => {
+    if(modalIsVisible) {
+      setUpdatedTitle(postTitle!);
+      setUpdatedBody(postBody!);
+    }
+  }, [modalIsVisible, postTitle, postBody])
+
+  const { 
+    isPending: deleteMutationIsPending, 
+    isError: deleteMutationIsError, 
+    isSuccess: deleteMutationIsSuccess, 
+    mutate: deleteMutate 
+  } = deletePostMutation(postId!);
+
+  const {
+    isPending: updateMutationIsPending,
+    isError: updateMutationIsError,
+    isSuccess: updateMutationIsSuccess,
+    mutate: updateMutate
+  } = updatePostMutation(payload);
 
   const renderDeleteInfo = () => {
     return (
       <>
-      {isPending && (
-        <TextInfo $color={isSuccess ? COLORS.GREEN : COLORS.RED}>
-          Pending, please wait...
-        </TextInfo>
-      )}
-
-      {isSuccess && (
-        <TextInfo $color={isSuccess ? COLORS.GREEN : COLORS.RED}>
-          Success! Post with id {postId} was deleted.
-        </TextInfo>
-      )}
-
-      {isError && (
-        <TextInfo $color={isSuccess ? COLORS.GREEN : COLORS.RED}>
-          Something went wrong! Try again later!
-        </TextInfo>
-      )}
-
-      {(!isPending && !isSuccess && !isError) && (
-        <TextInfo $color={isSuccess ? COLORS.GREEN : COLORS.RED}>
-          Are you sure you want to delete this blog post?
+        {deleteMutationIsPending && (
+          <TextInfo $color={deleteMutationIsSuccess ? COLORS.GREEN : COLORS.RED}>
+            Pending, please wait...
           </TextInfo>
         )}
+
+        {deleteMutationIsSuccess && (
+          <TextInfo $color={deleteMutationIsSuccess ? COLORS.GREEN : COLORS.RED}>
+            Success! Post with id {postId} was deleted.
+          </TextInfo>
+        )}
+
+        {deleteMutationIsError && (
+          <TextInfo $color={deleteMutationIsSuccess ? COLORS.GREEN : COLORS.RED}>
+            Something went wrong! Try again later!
+          </TextInfo>
+        )}
+
+        {(!deleteMutationIsPending && !deleteMutationIsSuccess && !deleteMutationIsError) && (
+          <TextInfo $color={deleteMutationIsSuccess ? COLORS.GREEN : COLORS.RED}>
+            Are you sure you want to delete this blog post?
+            </TextInfo>
+          )}
       </>
     )
   };
 
+  const renderUpdateInfo = () => {
+    return (
+      <>
+        {updateMutationIsPending && (
+          <TextInfo $color={updateMutationIsSuccess ? COLORS.GREEN : COLORS.RED}>
+            Pending, please wait...
+          </TextInfo>
+        )}
+
+        {updateMutationIsSuccess && (
+          <TextInfo $color={updateMutationIsSuccess ? COLORS.GREEN : COLORS.RED}>
+            Success! Post with id {postId} was updated.
+          </TextInfo>
+        )}
+
+        {updateMutationIsError && (
+          <TextInfo $color={updateMutationIsSuccess ? COLORS.GREEN : COLORS.RED}>
+            Something went wrong! Try again later!
+          </TextInfo>
+        )}
+      </>
+    )
+  }
+
+  const updateTitleHandler = (e: { target: { value: SetStateAction<string>; }; }) => {
+    setUpdatedTitle(e.target.value);
+  };
+  
   const renderEditForm = () => {
     return (
-      <p>Edit form</p>
+      <>
+      <FormWrapper>
+        <InputWrapper>
+          <Label>Post title:</Label>
+          <Input 
+            type="text" 
+            defaultValue={updatedTitle} 
+            onChange={updateTitleHandler} 
+            disabled={delSaveBtnClicked}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <Label>Post content:</Label>
+          <Textarea 
+            rows={5} 
+            defaultValue={updatedBody} 
+            disabled={delSaveBtnClicked}
+          />
+        </InputWrapper>
+      </FormWrapper>
+      {renderUpdateInfo()}
+      </>
     )
   };
 
   const deletePostHandler = () => {
     setDelSaveBtnClicked(true);
-    mutate();
+    deleteMutate();
   };
 
   const savePostHandler = () => {
-    console.log("Save post");
     setDelSaveBtnClicked(true);
+    setPayload({
+      id: +postId!,
+      userId: +userId!,
+      title: updatedTitle,
+      body: updatedBody
+    })
+    updateMutate();
   }
 
   const backToBlogPosts = () => {
     closeModal();
+    setDelSaveBtnClicked(false);
+    setUpdatedTitle('');
+    setUpdatedBody('');
     router.push(`/blogs/${userId}`);
   }
 
@@ -122,7 +206,7 @@ const ModalWrapper = styled.div<{ $modalIsVisible: boolean }>`
   background-color: ${COLORS.WHITE};
   border-radius: 8px;
   color: ${ COLORS.BLACK};
-  transform: translateY(-100%);
+  transform: translateY(-30%);
   transition: transform 0.2s ease;
   box-shadow: 0 2px 8px 3px;
 `;
@@ -156,4 +240,38 @@ const ModalButton = styled.button<{ $isDisabled?: boolean }>`
 const TextInfo = styled.p<{ $color: string}>`
   color: ${props => props.$color};
   text-align: center;
-`
+`;
+
+const FormWrapper = styled.div`
+  padding: 16px 8px 32px;
+  margin-bottom: 8px;
+  border: 1px solid ${COLORS.GRAY};
+  border-radius: 8px;
+  background-color: ${COLORS.GRAY};
+  display: flex;
+  flex-direction: column;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Label = styled.p`
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  padding: 4px 1px;
+`;
+
+const Input = styled.input`
+  padding: 4px 1px;
+  margin-bottom: 8px;
+  border: 1px solid ${COLORS.GRAY};
+`;
+
+const Textarea = styled.textarea`
+  padding: 4px 1px;
+  border: 1px solid ${COLORS.GRAY};
+
+`;

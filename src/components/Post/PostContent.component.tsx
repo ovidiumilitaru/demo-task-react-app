@@ -14,10 +14,6 @@ export default function PostContentContainer({ post }: Props) {
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [modalVariant, setModalVariant] = useState(MODAL_VARIANT.EDIT);
 
-  const openModal = () => {
-    setModalIsVisible(true);
-  }
-
   const closeModal = () => {
     setModalIsVisible(false);
   }
@@ -50,6 +46,8 @@ export default function PostContentContainer({ post }: Props) {
         variant={modalVariant} 
         userId={post?.userId.toString()}
         postId={post?.id.toString()}
+        postTitle={post?.title}
+        postBody={post?.body}
       />
     </PostContentWrapper>
   )
