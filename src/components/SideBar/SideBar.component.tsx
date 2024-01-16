@@ -18,8 +18,8 @@ export default function SideBarComponent({userName, userId}: Props) {
           <ImageProfile src={`/assets/images/userId_${userId}.jpg`} alt={`Image for userId ${userId}`} /> 
         </RoundImageWrapper>
         <WelcomeText>Live long & prosper,</WelcomeText>
-        <WelcomeText>{ userName }</WelcomeText>
-        <WelcomeText>ID = {userId}</WelcomeText>
+        <WelcomeText data-testid="sidebar-user-name">{ userName }</WelcomeText>
+        <WelcomeText data-testid="sidebar-user-id">ID = {userId}</WelcomeText>
       </UserSummaryWrapper>
       <Link linkTo={`/dashboard/${userId}`} text="Dashboard" textSize="medium" />
       <Link linkTo={`/blogs/${userId}`} text="Blog posts" textSize="medium" />
