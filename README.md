@@ -1,6 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-# Demo app by Ovidiu Militaru
+### Demo app by Ovidiu Militaru
 
 This project was created with [yarn create next-app](https://nextjs.org/docs/pages/api-reference/create-next-app)
 
@@ -10,10 +8,12 @@ Step 1 - clone the project
 Step 2 - Go to project directory and install dependencies using
 ## yarn install
 
-Step 3 - to run the app locally, in the terminal run command
+Step 3 - in the root of the project create an .env.local file and put in them the line of code from .env.example file
+
+Step 4 - to run the app locally, in the terminal run command
 ## yarn dev 
 
-Step 4 - in the browser open [http://localhost:3000](http://localhost:3000) to see the result
+Step 5 - in the browser open [http://localhost:3000](http://localhost:3000) to see the result
 
 This project use latest Nextjs framework with App router and Typescript. Also use styled components and react-query for 
 fetch data, GET, PUT and DELETE operations

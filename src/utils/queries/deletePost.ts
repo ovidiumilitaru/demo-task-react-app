@@ -1,8 +1,7 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { BASE_URL, POSTS_URL_PART, METHOD } from "@/utils/constants/constants";
 
 export const deletePostMutation = (postId: string) => {
-  const queryClient = useQueryClient();
   const url = `${BASE_URL}${POSTS_URL_PART}/${postId}`;
   const method = METHOD.DELETE;
 
@@ -12,10 +11,6 @@ export const deletePostMutation = (postId: string) => {
   }
 
   return useMutation({
-    mutationFn: fetchDeletePost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getPost']});
-      queryClient.invalidateQueries({ queryKey: ['getUserPosts']});
-    }
+    mutationFn: fetchDeletePost
   });
 }
